@@ -1,8 +1,6 @@
 package com.ucop.service;
 
 import com.ucop.config.HibernateUtil;
-import com.ucop.entity.Order;
-import com.ucop.entity.OrderItem;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
@@ -53,6 +51,30 @@ public class ReportService {
                             Object[].class
                     )
                     .setMaxResults(limit)
+                    .list();
+        }
+    }
+
+    /**
+     * Doanh thu theo phương thức thanh toán
+     */
+    public List<Object[]> revenueByPaymentMethod() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "select p.method, sum(p.amount) from Payment p group by p.method",
+                            Object[].class)
+                    .list();
+        }
+    }
+
+    /**
+     * Đếm đơn hàng theo trạng thái
+     */
+    public List<Object[]> orderStatusSummary() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "select o.status, count(o) from Order o group by o.status",
+                            Object[].class)
                     .list();
         }
     }

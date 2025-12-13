@@ -3,6 +3,8 @@ package com.ucop.service;
 import com.ucop.config.HibernateUtil;
 import com.ucop.dao.GenericDao;
 import com.ucop.entity.Account;
+import com.ucop.entity.Role;
+import com.ucop.entity.enums.RoleName;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -16,7 +18,26 @@ public class AccountService {
     private final GenericDao<Account> accountDao = new GenericDao<>(Account.class);
 
     public List<Account> findAll() {
-        return accountDao.findAll();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "select distinct a from Account a left join fetch a.roles",
+                            Account.class)
+                    .list();
+        }
+    }
+
+    public Account findById(Long id) {
+        return accountDao.findById(id);
+    }
+
+    public Account findByUsername(String username) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "from Account a where a.username = :u",
+                            Account.class)
+                    .setParameter("u", username)
+                    .uniqueResult();
+        }
     }
 
     public void save(Account account) {
@@ -25,6 +46,46 @@ public class AccountService {
 
     public void delete(Account account) {
         accountDao.delete(account);
+    }
+
+    public void addRole(Account account, RoleName roleName) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Role> q = session.createQuery("from Role r where r.name = :n", Role.class);
+            q.setParameter("n", roleName);
+            Role role = q.uniqueResult();
+            if (role == null) {
+                role = new Role(roleName);
+                session.beginTransaction();
+                session.persist(role);
+                session.getTransaction().commit();
+            }
+            account.getRoles().add(role);
+            save(account);
+        }
+    }
+
+    public void changePassword(Account account, String newRawPassword) {
+        account.setPasswordHash(hashPassword(newRawPassword));
+        save(account);
+    }
+
+    public void lockAccount(Account account) {
+        account.setLocked(true);
+        save(account);
+    }
+
+    public void unlockAccount(Account account) {
+        account.setLocked(false);
+        save(account);
+    }
+
+    public Account createUser(String username, String rawPassword, String email) {
+        Account acc = new Account();
+        acc.setUsername(username);
+        acc.setPasswordHash(hashPassword(rawPassword));
+        acc.setEmail(email);
+        save(acc);
+        return acc;
     }
 
     public Account login(String username, String rawPassword) {

@@ -20,7 +20,7 @@ public class Account extends AuditableEntity {
     private String username;
 
     @NotBlank
-    @Column(nullable = false, length = 255)
+    @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
     @Email

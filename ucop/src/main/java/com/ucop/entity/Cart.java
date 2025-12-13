@@ -44,6 +44,13 @@ public class Cart extends AuditableEntity {
     }
 
     public Set<CartItem> getItems() {
+        if (items == null) {
+            items = new HashSet<>();
+        }
         return items;
+    }
+
+    public void setItems(Set<CartItem> items) {
+        this.items = (items != null) ? items : new HashSet<>();
     }
 }

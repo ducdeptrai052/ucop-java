@@ -16,11 +16,14 @@ public class GenericDao<T> {
     }
 
     public void saveOrUpdate(T entity) {
-        executeInsideTransaction(session -> session.saveOrUpdate(entity));
+        executeInsideTransaction(session -> session.merge(entity));
     }
 
     public void delete(T entity) {
-        executeInsideTransaction(session -> session.remove(entity));
+        executeInsideTransaction(session -> {
+            T managed = session.contains(entity) ? entity : session.merge(entity);
+            session.remove(managed);
+        });
     }
 
     public T findById(Long id) {
@@ -29,10 +32,9 @@ public class GenericDao<T> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public List<T> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from " + entityClass.getSimpleName()).list();
+            return session.createQuery("from " + entityClass.getSimpleName(), entityClass).list();
         }
     }
 

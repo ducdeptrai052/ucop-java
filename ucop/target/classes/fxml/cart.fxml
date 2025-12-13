@@ -5,13 +5,62 @@
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ucop.controller.CartController"
-      spacing="10" prefWidth="800" prefHeight="600">
+      spacing="10" prefWidth="1000" prefHeight="700">
     <Label text="Giỏ hàng" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-    <TableView fx:id="tblCartItems" prefHeight="500">
+
+    <HBox spacing="10">
+        <Label text="Sản phẩm:"/>
+        <ComboBox fx:id="cbItem" prefWidth="200"/>
+        <Label text="Số lượng:"/>
+        <TextField fx:id="txtQty" prefWidth="80"/>
+        <Button text="Thêm" onAction="#handleAddItem"/>
+        <Button text="Xóa dòng" onAction="#handleRemoveSelected"/>
+        <Button text="Cập nhật SL" onAction="#handleUpdateQty"/>
+    </HBox>
+
+    <TableView fx:id="tblCart" prefHeight="300">
         <columns>
             <TableColumn fx:id="colItem" text="Sản phẩm" prefWidth="260"/>
             <TableColumn fx:id="colQty" text="Số lượng" prefWidth="80"/>
-            <TableColumn fx:id="colUnitPrice" text="Đơn giá" prefWidth="120"/>
+            <TableColumn fx:id="colPrice" text="Đơn giá" prefWidth="120"/>
         </columns>
     </TableView>
+
+    <HBox spacing="10">
+        <Label text="Mã giảm giá:"/>
+        <TextField fx:id="txtPromotionCode" prefWidth="140"/>
+        <Button text="Áp dụng" onAction="#handleApplyPromotion"/>
+        <Label text="Thanh toán:"/>
+        <ComboBox fx:id="cbPaymentMethod" prefWidth="180"/>
+        <Button text="Thanh toán" onAction="#handleCheckout"/>
+    </HBox>
+
+    <GridPane hgap="10" vgap="6">
+        <columnConstraints>
+            <ColumnConstraints minWidth="120"/>
+            <ColumnConstraints minWidth="120"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="28"/>
+            <RowConstraints minHeight="28"/>
+            <RowConstraints minHeight="28"/>
+            <RowConstraints minHeight="28"/>
+            <RowConstraints minHeight="28"/>
+        </rowConstraints>
+
+        <Label text="Subtotal" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Label fx:id="lblSubtotal" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Discount" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Label fx:id="lblDiscount" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Tax" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Label fx:id="lblTax" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Shipping" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <Label fx:id="lblShipping" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Grand Total" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <Label fx:id="lblGrandTotal" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-font-weight: bold;"/>
+    </GridPane>
 </VBox>

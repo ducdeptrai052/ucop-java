@@ -107,9 +107,30 @@ public class CartController {
             return;
         }
 
-        orderService.addItemToCart(currentCart, it, qty);
+        currentCart = orderService.addItemToCart(currentCart, it, qty);
         reloadCart();
         txtQty.clear();
+    }
+
+    @FXML
+    private void handleRemoveSelected() {
+        CartItem ci = tblCart.getSelectionModel().getSelectedItem();
+        if (ci == null || currentCart == null) return;
+        currentCart = orderService.removeCartItem(currentCart.getId(), ci.getItem().getId());
+        reloadCart();
+    }
+
+    @FXML
+    private void handleUpdateQty() {
+        CartItem ci = tblCart.getSelectionModel().getSelectedItem();
+        if (ci == null || currentCart == null) return;
+        try {
+            int qty = Integer.parseInt(txtQty.getText().trim());
+            currentCart = orderService.updateCartItemQty(currentCart.getId(), ci.getItem().getId(), qty);
+            reloadCart();
+        } catch (NumberFormatException e) {
+            alert("Số lượng không hợp lệ");
+        }
     }
 
     @FXML
@@ -137,7 +158,7 @@ public class CartController {
         }
 
         try {
-            Order order = orderService.checkoutCurrentCart(currentPromotion);
+            Order order = orderService.checkoutCurrentCart(currentPromotion, method);
             alert("Tạo đơn thành công, mã đơn: " + order.getId());
 
             // tạo cart mới và reload
@@ -155,11 +176,14 @@ public class CartController {
     /* ======== HÀM PHỤ ======== */
 
     private void reloadCart() {
-        if (currentCart == null || currentCart.getItems() == null) {
+        if (currentCart == null) {
             tblCart.setItems(FXCollections.observableArrayList());
             recalcTotals();
             return;
         }
+
+        Cart fresh = orderService.loadCartWithItems(currentCart.getId());
+        currentCart = fresh != null ? fresh : currentCart;
 
         ObservableList<CartItem> data =
                 FXCollections.observableArrayList(new ArrayList<>(currentCart.getItems()));

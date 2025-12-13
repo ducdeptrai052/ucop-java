@@ -27,16 +27,23 @@ public class DashboardController {
     @FXML
     private PieChart chartTopItems;
 
+    @FXML
+    private PieChart chartPaymentMethod;
+
+    @FXML
+    private PieChart chartOrderStatus;
+
     private final ReportService reportService = new ReportService();
 
     @FXML
     public void initialize() {
         loadRevenueChart();
         loadTopItemsChart();
+        loadPaymentMethodChart();
+        loadOrderStatusChart();
     }
 
     private void loadRevenueChart() {
-        // dùng hàm revenueLastDays(7) trong ReportService
         Map<String, BigDecimal> data = reportService.revenueLastDays(7);
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
@@ -61,5 +68,27 @@ public class DashboardController {
         }
 
         chartTopItems.setData(pieData);
+    }
+
+    private void loadPaymentMethodChart() {
+        List<Object[]> rows = reportService.revenueByPaymentMethod();
+        var pieData = FXCollections.<PieChart.Data>observableArrayList();
+        for (Object[] row : rows) {
+            String method = row[0] != null ? row[0].toString() : "UNKNOWN";
+            Number total = (Number) row[1];
+            pieData.add(new PieChart.Data(method, total.doubleValue()));
+        }
+        chartPaymentMethod.setData(pieData);
+    }
+
+    private void loadOrderStatusChart() {
+        List<Object[]> rows = reportService.orderStatusSummary();
+        var pieData = FXCollections.<PieChart.Data>observableArrayList();
+        for (Object[] row : rows) {
+            String status = row[0] != null ? row[0].toString() : "UNKNOWN";
+            Number cnt = (Number) row[1];
+            pieData.add(new PieChart.Data(status, cnt.doubleValue()));
+        }
+        chartOrderStatus.setData(pieData);
     }
 }

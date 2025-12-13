@@ -5,6 +5,10 @@ import com.ucop.service.CatalogService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
+
+import java.nio.file.Path;
 
 public class CategoryController {
 
@@ -72,6 +76,41 @@ public class CategoryController {
             catalogService.deleteCategory(selected);
             loadData();
             handleNew();
+        }
+    }
+
+    @FXML
+    private void handleExportCsv() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Chọn nơi lưu CSV");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
+        Window w = tblCategories.getScene().getWindow();
+        var file = chooser.showSaveDialog(w);
+        if (file != null) {
+            try {
+                catalogService.exportCategoriesToCsv(Path.of(file.toURI()));
+                showAlert("Thông báo", "Export thành công");
+            } catch (Exception e) {
+                showAlert("Lỗi", "Export thất bại: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void handleImportCsv() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Chọn file CSV");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
+        Window w = tblCategories.getScene().getWindow();
+        var file = chooser.showOpenDialog(w);
+        if (file != null) {
+            try {
+                catalogService.importCategoriesFromCsv(Path.of(file.toURI()));
+                loadData();
+                showAlert("Thông báo", "Import thành công");
+            } catch (Exception e) {
+                showAlert("Lỗi", "Import thất bại: " + e.getMessage());
+            }
         }
     }
 

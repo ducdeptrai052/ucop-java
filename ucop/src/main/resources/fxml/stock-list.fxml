@@ -5,14 +5,41 @@
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ucop.controller.StockController"
-      spacing="10" prefWidth="800" prefHeight="600">
+      spacing="10" prefWidth="1000" prefHeight="700">
     <Label text="Tồn kho" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <HBox spacing="10">
+        <Label text="Mã kho:"/>
+        <TextField fx:id="txtWhCode" prefWidth="120"/>
+        <Label text="Tên kho:"/>
+        <TextField fx:id="txtWhName" prefWidth="180"/>
+        <Label text="Địa điểm:"/>
+        <TextField fx:id="txtWhLocation" prefWidth="200"/>
+        <Button text="Lưu kho" onAction="#handleSaveWarehouse"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Sản phẩm:"/>
+        <ComboBox fx:id="cbItem" prefWidth="180"/>
+        <Label text="Kho:"/>
+        <ComboBox fx:id="cbWarehouse" prefWidth="180"/>
+        <Label text="OnHand:"/>
+        <TextField fx:id="txtOnHand" prefWidth="80"/>
+        <Label text="Reserved:"/>
+        <TextField fx:id="txtReserved" prefWidth="80"/>
+        <Label text="LowStockThreshold:"/>
+        <TextField fx:id="txtLowStock" prefWidth="80"/>
+        <Button text="Lưu tồn" onAction="#handleSaveStock"/>
+    </HBox>
+
+    <Label fx:id="lblLowStock" text="Sản phẩm sắp hết hàng: 0" style="-fx-font-weight:bold;"/>
+
     <TableView fx:id="tblStock" prefHeight="500">
         <columns>
-            <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
-            <TableColumn fx:id="colItem" text="Sản phẩm" prefWidth="260"/>
-            <TableColumn fx:id="colOnHand" text="Tồn" prefWidth="80"/>
-            <TableColumn fx:id="colReserved" text="Đã giữ" prefWidth="80"/>
+            <TableColumn fx:id="colItem" text="Sản phẩm" prefWidth="240"/>
+            <TableColumn fx:id="colWarehouse" text="Kho" prefWidth="160"/>
+            <TableColumn fx:id="colOnHand" text="OnHand" prefWidth="100"/>
+            <TableColumn fx:id="colReserved" text="Reserved" prefWidth="100"/>
         </columns>
     </TableView>
 </VBox>

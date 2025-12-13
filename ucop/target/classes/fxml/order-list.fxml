@@ -5,19 +5,27 @@
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ucop.controller.OrderManagementController"
-      spacing="10" prefWidth="800" prefHeight="600">
-    <HBox spacing="10">
+      spacing="10" prefWidth="1000" prefHeight="700">
+    <HBox spacing="10" alignment="CENTER_LEFT">
         <Label text="Đơn hàng" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Label text="Lọc trạng thái:"/>
-        <ComboBox fx:id="cbStatusFilter"/>
+        <ComboBox fx:id="cbStatusFilter" onAction="#handleFilter" prefWidth="200"/>
     </HBox>
+
+    <HBox spacing="10">
+        <Button text="Đánh dấu đã thanh toán" onAction="#handleMarkPaid"/>
+        <Button text="Tạo vận đơn" onAction="#handleCreateShipment"/>
+        <Button text="Hoàn tiền" onAction="#handleRefund"/>
+    </HBox>
+
     <TableView fx:id="tblOrders" prefHeight="500">
         <columns>
             <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
-            <TableColumn fx:id="colCustomer" text="Khách" prefWidth="200"/>
+            <TableColumn fx:id="colCustomer" text="Khách" prefWidth="160"/>
             <TableColumn fx:id="colStatus" text="Trạng thái" prefWidth="140"/>
-            <TableColumn fx:id="colGrandTotal" text="Tổng tiền" prefWidth="140"/>
+            <TableColumn fx:id="colDate" text="Ngày" prefWidth="180"/>
+            <TableColumn fx:id="colTotal" text="Tổng tiền" prefWidth="120"/>
         </columns>
     </TableView>
 </VBox>

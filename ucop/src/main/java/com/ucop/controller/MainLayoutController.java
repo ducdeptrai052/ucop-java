@@ -2,11 +2,15 @@ package com.ucop.controller;
 
 import com.ucop.MainApplication;
 import com.ucop.entity.Account;
+import com.ucop.entity.enums.RoleName;
+import com.ucop.security.SecurityContext;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 public class MainLayoutController {
 
@@ -16,24 +20,52 @@ public class MainLayoutController {
     @FXML
     private StackPane contentPane;
 
-    private Account currentAccount;
+    @FXML private Button btnDashboard;
+    @FXML private Button btnUser;
+    @FXML private Button btnCategory;
+    @FXML private Button btnItem;
+    @FXML private Button btnStock;
+    @FXML private Button btnCart;
+    @FXML private Button btnOrders;
+    @FXML private Button btnPromotions;
 
     @FXML
     public void initialize() {
-        // có thể load dashboard mặc định ở đây nếu muốn
         showDashboard();
     }
 
     public void setCurrentAccount(Account acc) {
-        this.currentAccount = acc;
         if (lblCurrentUser != null && acc != null) {
-            lblCurrentUser.setText("Đang đăng nhập: " + acc.getUsername());
+            lblCurrentUser.setText("Dang dang nh?p: " + acc.getUsername());
         }
-        // khi login xong thì load dashboard
+        SecurityContext.setCurrentUser(acc);
+        applyRoleVisibility(acc);
         showDashboard();
     }
 
-    /* ======= CÁC HÀM CHUYỂN MÀN ======= */
+    private void applyRoleVisibility(Account acc) {
+        if (acc == null || acc.getRoles() == null) return;
+        boolean isAdmin = acc.getRoles().stream().anyMatch(r -> r.getName() == RoleName.ADMIN);
+        boolean isStaff = acc.getRoles().stream().anyMatch(r -> r.getName() == RoleName.STAFF);
+        boolean isCustomer = acc.getRoles().stream().anyMatch(r -> r.getName() == RoleName.CUSTOMER);
+
+        if (isAdmin) return;
+
+        if (isStaff) {
+            if (btnUser != null) btnUser.setVisible(false);
+            if (btnPromotions != null) btnPromotions.setVisible(false);
+        }
+
+        if (isCustomer && !isStaff) {
+            if (btnUser != null) btnUser.setVisible(false);
+            if (btnCategory != null) btnCategory.setVisible(false);
+            if (btnItem != null) btnItem.setVisible(false);
+            if (btnStock != null) btnStock.setVisible(false);
+            if (btnPromotions != null) btnPromotions.setVisible(false);
+        }
+    }
+
+    /* ======= CAC HAM CHUY?N MAN ======= */
 
     @FXML
     public void showDashboard() {
@@ -75,7 +107,20 @@ public class MainLayoutController {
         setContent("/fxml/promotion-list.fxml");
     }
 
-    /* ======= HÀM LOAD FXML CON ======= */
+    @FXML
+    public void handleLogout() {
+        SecurityContext.clear();
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("/fxml/login.fxml"));
+            Stage stage = (Stage) contentPane.getScene().getWindow();
+            stage.setScene(new javafx.scene.Scene(loader.load()));
+            stage.setTitle("UCOP - Login");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /* ======= HAM LOAD FXML CON ======= */
 
     private void setContent(String fxmlPath) {
         try {
@@ -84,7 +129,6 @@ public class MainLayoutController {
             contentPane.getChildren().setAll(node);
         } catch (Exception e) {
             e.printStackTrace();
-            // em có thể log ra label hoặc Alert nếu muốn
         }
     }
 }

@@ -5,13 +5,58 @@
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ucop.controller.PromotionController"
-      spacing="10" prefWidth="800" prefHeight="600">
-    <Label text="Khuyến mãi" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+      spacing="10" prefWidth="1000" prefHeight="700">
+    <Label text="Khuyen mai" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="8">
+        <columnConstraints>
+            <ColumnConstraints minWidth="120"/>
+            <ColumnConstraints minWidth="200"/>
+            <ColumnConstraints minWidth="120"/>
+            <ColumnConstraints minWidth="200"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="30"/>
+            <RowConstraints minHeight="30"/>
+            <RowConstraints minHeight="30"/>
+            <RowConstraints minHeight="30"/>
+            <RowConstraints minHeight="30"/>
+        </rowConstraints>
+
+        <Label text="Code:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtCode" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Mo ta:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtDescription" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+        <Label text="% giam:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtPercent" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Label text="Giam co dinh:" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+        <TextField fx:id="txtValue" GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+
+        <Label text="Ngay bat dau:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtStart" promptText="yyyy-MM-dd" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        <Label text="Ngay ket thuc:" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+        <TextField fx:id="txtEnd" promptText="yyyy-MM-dd" GridPane.rowIndex="3" GridPane.columnIndex="3"/>
+
+        <Label text="Max usage:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtMaxUsage" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+        <Label text="Min order value:" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
+        <TextField fx:id="txtMinOrder" GridPane.rowIndex="4" GridPane.columnIndex="3"/>
+    </GridPane>
+
+    <HBox spacing="10">
+        <Button text="Moi" onAction="#handleNew"/>
+        <Button text="Luu" onAction="#handleSave"/>
+        <Button text="Xoa" onAction="#handleDelete"/>
+    </HBox>
+
     <TableView fx:id="tblPromotions" prefHeight="500">
         <columns>
             <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
-            <TableColumn fx:id="colCode" text="Mã" prefWidth="140"/>
-            <TableColumn fx:id="colDescription" text="Mô tả" prefWidth="260"/>
+            <TableColumn fx:id="colCode" text="Ma" prefWidth="140"/>
+            <TableColumn fx:id="colDescription" text="Mo ta" prefWidth="260"/>
+            <TableColumn fx:id="colUsed" text="Used/Max" prefWidth="120"/>
         </columns>
     </TableView>
 </VBox>

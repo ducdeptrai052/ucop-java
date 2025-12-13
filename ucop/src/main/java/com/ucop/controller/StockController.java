@@ -1,6 +1,8 @@
 package com.ucop.controller;
 
+import com.ucop.entity.Item;
 import com.ucop.entity.StockItem;
+import com.ucop.entity.Warehouse;
 import com.ucop.service.CatalogService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -15,6 +17,14 @@ public class StockController {
     @FXML private TableColumn<StockItem, Number> colReserved;
 
     @FXML private Label lblLowStock;
+    @FXML private ComboBox<Item> cbItem;
+    @FXML private ComboBox<Warehouse> cbWarehouse;
+    @FXML private TextField txtOnHand;
+    @FXML private TextField txtReserved;
+    @FXML private TextField txtLowStock;
+    @FXML private TextField txtWhCode;
+    @FXML private TextField txtWhName;
+    @FXML private TextField txtWhLocation;
 
     private final CatalogService catalogService = new CatalogService();
 
@@ -29,7 +39,39 @@ public class StockController {
         colReserved.setCellValueFactory(c -> new javafx.beans.property.SimpleIntegerProperty(
                 c.getValue().getReserved()));
 
+        cbItem.setItems(FXCollections.observableArrayList(catalogService.findAllItems()));
+        cbWarehouse.setItems(FXCollections.observableArrayList(catalogService.findAllWarehouses()));
+
         loadData();
+    }
+
+    @FXML
+    private void handleSaveWarehouse() {
+        Warehouse wh = new Warehouse();
+        wh.setCode(txtWhCode.getText().trim());
+        wh.setName(txtWhName.getText().trim());
+        wh.setLocation(txtWhLocation.getText().trim());
+        catalogService.saveWarehouse(wh);
+        cbWarehouse.setItems(FXCollections.observableArrayList(catalogService.findAllWarehouses()));
+    }
+
+    @FXML
+    private void handleSaveStock() {
+        Item item = cbItem.getSelectionModel().getSelectedItem();
+        Warehouse wh = cbWarehouse.getSelectionModel().getSelectedItem();
+        if (item == null || wh == null) {
+            alert("Chọn sản phẩm và kho");
+            return;
+        }
+        try {
+            int onHand = Integer.parseInt(txtOnHand.getText().trim());
+            int reserved = Integer.parseInt(txtReserved.getText().trim());
+            int low = Integer.parseInt(txtLowStock.getText().trim());
+            catalogService.saveStockItem(wh, item, onHand, reserved, low);
+            loadData();
+        } catch (NumberFormatException e) {
+            alert("Giá trị tồn không hợp lệ");
+        }
     }
 
     private void loadData() {
@@ -38,5 +80,11 @@ public class StockController {
 
         int low = catalogService.findLowStock().size();
         lblLowStock.setText("Sản phẩm sắp hết hàng: " + low);
+    }
+
+    private void alert(String msg) {
+        Alert a = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
+        a.setHeaderText(null);
+        a.showAndWait();
     }
 }

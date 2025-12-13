@@ -45,6 +45,9 @@ public class Order extends AuditableEntity {
     @OneToMany(mappedBy = "order")
     private Set<Payment> payments = new HashSet<>();
 
+    @OneToMany(mappedBy = "order")
+    private Set<Shipment> shipments = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -119,5 +122,9 @@ public class Order extends AuditableEntity {
 
     public Set<Payment> getPayments() {
         return payments;
+    }
+
+    public Set<Shipment> getShipments() {
+        return shipments;
     }
 }

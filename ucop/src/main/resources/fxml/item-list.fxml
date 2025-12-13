@@ -5,14 +5,53 @@
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ucop.controller.ItemController"
-      spacing="10" prefWidth="800" prefHeight="600">
+      spacing="10" prefWidth="900" prefHeight="700">
     <Label text="Sản phẩm/Dịch vụ" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="8">
+        <columnConstraints>
+            <ColumnConstraints minWidth="100"/>
+            <ColumnConstraints minWidth="200"/>
+            <ColumnConstraints minWidth="120"/>
+            <ColumnConstraints minWidth="200"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="30"/>
+            <RowConstraints minHeight="30"/>
+            <RowConstraints minHeight="30"/>
+            <RowConstraints minHeight="30"/>
+        </rowConstraints>
+
+        <Label text="SKU:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtSku" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Tên:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtName" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Giá:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtPrice" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Danh mục:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <ComboBox fx:id="cbCategory" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="200"/>
+
+        <CheckBox fx:id="chkActive" text="Đang bán" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+    </GridPane>
+
+    <HBox spacing="10">
+        <Button text="Mới" onAction="#handleNew"/>
+        <Button text="Lưu" onAction="#handleSave"/>
+        <Button text="Xóa" onAction="#handleDelete"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="Export CSV" onAction="#handleExportCsv"/>
+        <Button text="Import CSV" onAction="#handleImportCsv"/>
+    </HBox>
+
     <TableView fx:id="tblItems" prefHeight="500">
         <columns>
-            <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
             <TableColumn fx:id="colSku" text="SKU" prefWidth="120"/>
             <TableColumn fx:id="colName" text="Tên" prefWidth="260"/>
             <TableColumn fx:id="colPrice" text="Giá" prefWidth="120"/>
+            <TableColumn fx:id="colActive" text="Active" prefWidth="80"/>
         </columns>
     </TableView>
 </VBox>

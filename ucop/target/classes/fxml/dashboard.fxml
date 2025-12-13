@@ -12,16 +12,14 @@
 <AnchorPane xmlns="http://javafx.com/javafx/17.0.2"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.ucop.controller.DashboardController"
-            prefWidth="900.0" prefHeight="600.0">
+            prefWidth="1000.0" prefHeight="700.0">
 
     <children>
-        <VBox spacing="10.0" prefWidth="900.0" prefHeight="600.0">
-            <!-- Tiêu đề -->
+        <VBox spacing="10.0" prefWidth="1000.0" prefHeight="700.0">
             <children>
                 <Label text="Dashboard" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
                 <HBox spacing="10.0">
-                    <!-- Biểu đồ doanh thu -->
                     <BarChart fx:id="chartRevenue" prefWidth="600.0" prefHeight="400.0">
                         <xAxis>
                             <CategoryAxis fx:id="xAxis" label="Ngày"/>
@@ -31,8 +29,12 @@
                         </yAxis>
                     </BarChart>
 
-                    <!-- Top sản phẩm -->
                     <PieChart fx:id="chartTopItems" prefWidth="280.0" prefHeight="400.0"/>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <PieChart fx:id="chartPaymentMethod" prefWidth="300" prefHeight="300"/>
+                    <PieChart fx:id="chartOrderStatus" prefWidth="300" prefHeight="300"/>
                 </HBox>
             </children>
         </VBox>

@@ -7,6 +7,16 @@
       fx:controller="com.ucop.controller.CategoryController"
       spacing="10" prefWidth="800" prefHeight="600">
     <Label text="Danh mục" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <HBox spacing="10">
+        <Label text="Tên danh mục:"/>
+        <TextField fx:id="txtName" prefWidth="300"/>
+        <Button fx:id="btnSave" text="Lưu" onAction="#handleSave"/>
+        <Button fx:id="btnDelete" text="Xóa" onAction="#handleDelete"/>
+        <Button text="Mới" onAction="#handleNew"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+    </HBox>
+
     <TableView fx:id="tblCategories" prefHeight="500">
         <columns>
             <TableColumn fx:id="colId" text="ID" prefWidth="80"/>
