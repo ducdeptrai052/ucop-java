@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ucop.controller.UserManagementController"
+      spacing="10" prefWidth="800" prefHeight="600">
+    <Label text="Quản lý người dùng" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    <TableView fx:id="tblUsers" prefHeight="500">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="80"/>
+            <TableColumn fx:id="colUsername" text="Username" prefWidth="200"/>
+            <TableColumn fx:id="colEmail" text="Email" prefWidth="250"/>
+        </columns>
+    </TableView>
+</VBox>

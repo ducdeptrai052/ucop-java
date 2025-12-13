@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ucop.controller.StockController"
+      spacing="10" prefWidth="800" prefHeight="600">
+    <Label text="Tồn kho" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    <TableView fx:id="tblStock" prefHeight="500">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+            <TableColumn fx:id="colItem" text="Sản phẩm" prefWidth="260"/>
+            <TableColumn fx:id="colOnHand" text="Tồn" prefWidth="80"/>
+            <TableColumn fx:id="colReserved" text="Đã giữ" prefWidth="80"/>
+        </columns>
+    </TableView>
+</VBox>

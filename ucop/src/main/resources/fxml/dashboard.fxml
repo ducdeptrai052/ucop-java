@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ucop.controller.DashboardController"
+            prefWidth="900.0" prefHeight="600.0">
+
+    <children>
+        <VBox spacing="10.0" prefWidth="900.0" prefHeight="600.0">
+            <!-- Tiêu đề -->
+            <children>
+                <Label text="Dashboard" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+                <HBox spacing="10.0">
+                    <!-- Biểu đồ doanh thu -->
+                    <BarChart fx:id="chartRevenue" prefWidth="600.0" prefHeight="400.0">
+                        <xAxis>
+                            <CategoryAxis fx:id="xAxis" label="Ngày"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="yAxis" label="Doanh thu"/>
+                        </yAxis>
+                    </BarChart>
+
+                    <!-- Top sản phẩm -->
+                    <PieChart fx:id="chartTopItems" prefWidth="280.0" prefHeight="400.0"/>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

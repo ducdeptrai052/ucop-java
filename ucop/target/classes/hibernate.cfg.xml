@@ -1,0 +1,32 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- MySQL connection -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ucop?useSSL=false&amp;serverTimezone=UT&amp;CallowPublicKeyRetrieval=true</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">06062005</property>
+
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
+
+        <!-- ENTITY MAPPINGS -->
+        <mapping class="com.ucop.entity.Account"/>
+        <mapping class="com.ucop.entity.AccountProfile"/>
+        <mapping class="com.ucop.entity.Role"/>
+        <mapping class="com.ucop.entity.Category"/>
+        <mapping class="com.ucop.entity.Item"/>
+        <mapping class="com.ucop.entity.Warehouse"/>
+        <mapping class="com.ucop.entity.StockItem"/>
+        <mapping class="com.ucop.entity.Cart"/>
+        <mapping class="com.ucop.entity.CartItem"/>
+        <mapping class="com.ucop.entity.Order"/>
+        <mapping class="com.ucop.entity.OrderItem"/>
+        <mapping class="com.ucop.entity.Payment"/>
+        <mapping class="com.ucop.entity.Promotion"/>
+    </session-factory>
+</hibernate-configuration>

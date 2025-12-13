@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ucop.controller.MainLayoutController">
+
+    <!-- Thanh top: các nút chuyển màn -->
+    <top>
+        <HBox spacing="5.0" padding="10.0">
+            <children>
+                <Button text="Dashboard" onAction="#showDashboard"/>
+                <Button text="User" onAction="#showUserManagement"/>
+                <Button text="Category" onAction="#showCategory"/>
+                <Button text="Item" onAction="#showItem"/>
+                <Button text="Stock" onAction="#showStock"/>
+                <Button text="Cart" onAction="#showCart"/>
+                <Button text="Orders" onAction="#showOrders"/>
+                <Button text="Promotions" onAction="#showPromotions"/>
+
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblCurrentUser" text="Đang đăng nhập:"/>
+            </children>
+        </HBox>
+    </top>
+
+    <!-- Nội dung chính: các màn con sẽ load vào đây -->
+    <center>
+        <StackPane fx:id="contentPane" padding="10.0"/>
+    </center>
+</BorderPane>
