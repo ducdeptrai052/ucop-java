@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17.0.2"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.ucop.controller.DashboardController"
-            prefWidth="1000.0" prefHeight="700.0">
-
+<VBox xmlns="http://javafx.com/javafx/17.0.2"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.ucop.controller.DashboardController"
+      spacing="10.0" prefWidth="1000.0" prefHeight="400.0">
     <children>
-        <VBox spacing="10.0" prefWidth="1000.0" prefHeight="700.0">
-            <children>
-                <Label text="Dashboard" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+        <Label text="Dashboard" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
-                <HBox spacing="10.0">
-                    <BarChart fx:id="chartRevenue" prefWidth="600.0" prefHeight="400.0">
-                        <xAxis>
-                            <CategoryAxis fx:id="xAxis" label="Ngày"/>
-                        </xAxis>
-                        <yAxis>
-                            <NumberAxis fx:id="yAxis" label="Doanh thu"/>
-                        </yAxis>
-                    </BarChart>
+        <GridPane hgap="10" vgap="8">
+            <columnConstraints>
+                <ColumnConstraints minWidth="200"/>
+                <ColumnConstraints minWidth="600"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="28"/>
+                <RowConstraints minHeight="28"/>
+                <RowConstraints minHeight="28"/>
+                <RowConstraints minHeight="28"/>
+                <RowConstraints minHeight="28"/>
+            </rowConstraints>
 
-                    <PieChart fx:id="chartTopItems" prefWidth="280.0" prefHeight="400.0"/>
-                </HBox>
+            <Label text="Tổng doanh thu:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <Label fx:id="lblTotalRevenue" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-                <HBox spacing="10.0">
-                    <PieChart fx:id="chartPaymentMethod" prefWidth="300" prefHeight="300"/>
-                    <PieChart fx:id="chartOrderStatus" prefWidth="300" prefHeight="300"/>
-                </HBox>
-            </children>
-        </VBox>
+            <Label text="Tổng số đơn:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Label fx:id="lblTotalOrders" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Tổng sản phẩm đã bán:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <Label fx:id="lblItemsSold" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Doanh thu theo phương thức thanh toán:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <Label fx:id="lblRevenueByPayment" GridPane.rowIndex="3" GridPane.columnIndex="1" wrapText="true"/>
+
+            <Label text="Đơn theo trạng thái:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <Label fx:id="lblOrderStatus" GridPane.rowIndex="4" GridPane.columnIndex="1" wrapText="true"/>
+        </GridPane>
     </children>
-</AnchorPane>
+</VBox>

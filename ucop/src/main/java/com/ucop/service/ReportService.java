@@ -78,4 +78,31 @@ public class ReportService {
                     .list();
         }
     }
+
+    public BigDecimal totalRevenue() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            BigDecimal res = session.createQuery(
+                    "select coalesce(sum(o.grandTotal),0) from Order o", BigDecimal.class)
+                    .uniqueResult();
+            return res != null ? res : BigDecimal.ZERO;
+        }
+    }
+
+    public long totalOrders() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long res = session.createQuery("select count(o) from Order o", Long.class)
+                    .uniqueResult();
+            return res != null ? res : 0L;
+        }
+    }
+
+    public long totalItemsSold() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long res = session.createQuery(
+                            "select coalesce(sum(oi.quantity),0) from OrderItem oi",
+                            Long.class)
+                    .uniqueResult();
+            return res != null ? res : 0L;
+        }
+    }
 }
