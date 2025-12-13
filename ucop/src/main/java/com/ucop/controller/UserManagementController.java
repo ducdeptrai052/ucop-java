@@ -105,6 +105,10 @@ public class UserManagementController {
                 alert("Nhập mật khẩu cho tài khoản mới");
                 return;
             }
+            if (accountService.existsByUsername(username)) {
+                alert("Username đã tồn tại");
+                return;
+            }
             Account acc = accountService.createUser(username, pwd, email);
             applyProfile(acc);
             accountService.save(acc);

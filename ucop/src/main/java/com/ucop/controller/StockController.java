@@ -40,7 +40,36 @@ public class StockController {
                 c.getValue().getReserved()));
 
         cbItem.setItems(FXCollections.observableArrayList(catalogService.findAllItems()));
+        cbItem.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(com.ucop.entity.Item item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item.getName());
+            }
+        });
+        cbItem.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(com.ucop.entity.Item item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item.getName());
+            }
+        });
+
         cbWarehouse.setItems(FXCollections.observableArrayList(catalogService.findAllWarehouses()));
+        cbWarehouse.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(com.ucop.entity.Warehouse item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item.getName());
+            }
+        });
+        cbWarehouse.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(com.ucop.entity.Warehouse item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item.getName());
+            }
+        });
 
         loadData();
     }

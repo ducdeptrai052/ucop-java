@@ -55,4 +55,9 @@ public class Category extends AuditableEntity {
     public Set<Item> getItems() {
         return items;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

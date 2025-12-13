@@ -17,7 +17,7 @@ public class ItemController {
     @FXML private TableView<Item> tblItems;
     @FXML private TableColumn<Item, String> colSku;
     @FXML private TableColumn<Item, String> colName;
-    @FXML private TableColumn<Item, Number> colPrice;
+    @FXML private TableColumn<Item, String> colPrice;
     @FXML private TableColumn<Item, Boolean> colActive;
 
     @FXML private TextField txtSku;
@@ -33,10 +33,25 @@ public class ItemController {
     public void initialize() {
         colSku.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getSku()));
         colName.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getName()));
-        colPrice.setCellValueFactory(c -> new javafx.beans.property.SimpleDoubleProperty(c.getValue().getPrice().doubleValue()));
+        colPrice.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(
+                c.getValue().getPrice() != null ? c.getValue().getPrice().toPlainString() : ""));
         colActive.setCellValueFactory(c -> new javafx.beans.property.SimpleBooleanProperty(c.getValue().isActive()));
 
         cbCategory.setItems(FXCollections.observableList(catalogService.findAllCategories()));
+        cbCategory.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(Category item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item.getName());
+            }
+        });
+        cbCategory.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Category item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item.getName());
+            }
+        });
 
         loadItems();
 

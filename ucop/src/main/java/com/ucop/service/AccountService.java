@@ -40,6 +40,28 @@ public class AccountService {
         }
     }
 
+    public boolean existsByUsername(String username) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long cnt = session.createQuery(
+                            "select count(a) from Account a where a.username = :u",
+                            Long.class)
+                    .setParameter("u", username)
+                    .uniqueResult();
+            return cnt != null && cnt > 0;
+        }
+    }
+
+    public boolean existsByEmail(String email) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long cnt = session.createQuery(
+                            "select count(a) from Account a where a.email = :e",
+                            Long.class)
+                    .setParameter("e", email)
+                    .uniqueResult();
+            return cnt != null && cnt > 0;
+        }
+    }
+
     public void save(Account account) {
         accountDao.saveOrUpdate(account);
     }
