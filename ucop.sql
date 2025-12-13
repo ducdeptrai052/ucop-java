@@ -4,22 +4,22 @@ USE ucop;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
--- Xóa bảng cũ (nếu cần)
+-- Xóa bảng cũ (nếu có)
 DROP TABLE IF EXISTS shipments, payments, order_items, orders, cart_items, carts,
     stock_items, warehouses, items, categories,
     account_roles, account_profiles, accounts, roles, promotions;
 
--- Bảng role
+-- Roles
 CREATE TABLE roles (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
--- Bảng account
+-- Accounts
 CREATE TABLE accounts (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
+    passwordHash VARCHAR(255) NOT NULL,
     email VARCHAR(120) NOT NULL UNIQUE,
     locked TINYINT(1) DEFAULT 0,
     created_at DATETIME,
@@ -31,7 +31,7 @@ CREATE TABLE accounts (
 -- Profile 1-1
 CREATE TABLE account_profiles (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(200),
+    fullName VARCHAR(200),
     phone VARCHAR(50),
     address VARCHAR(255),
     account_id BIGINT NOT NULL UNIQUE,
@@ -42,7 +42,7 @@ CREATE TABLE account_profiles (
     CONSTRAINT fk_profile_account FOREIGN KEY (account_id) REFERENCES accounts(id)
 );
 
--- Quan hệ account-role
+-- Account-Role
 CREATE TABLE account_roles (
     account_id BIGINT NOT NULL,
     role_id BIGINT NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE account_roles (
     CONSTRAINT fk_ar_role FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
--- Category (đa cấp)
+-- Category
 CREATE TABLE categories (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
@@ -225,18 +225,18 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- Seed dữ liệu
 INSERT INTO roles (name) VALUES ('ADMIN'), ('STAFF'), ('CUSTOMER');
 
--- Mật khẩu SHA-256 (không salt):
+-- Mật khẩu SHA-256:
 -- admin123 -> 240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9
 -- staff123 -> 10176e7b7b24d317acfcf8d2064cfd2f24e154f7b5a96603077d5ef813d6a6b6
 -- customer123 -> b041c0aeb35bb0fa4aa668ca5a920b590196fdaf9a00eb852c9b7f4d123cc6d6
 
-INSERT INTO accounts (username, password_hash, email, locked) VALUES
+INSERT INTO accounts (username, passwordHash, email, locked) VALUES
 ('admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'admin@example.com', 0),
 ('staff', '10176e7b7b24d317acfcf8d2064cfd2f24e154f7b5a96603077d5ef813d6a6b6', 'staff@example.com', 0),
 ('customer', 'b041c0aeb35bb0fa4aa668ca5a920b590196fdaf9a00eb852c9b7f4d123cc6d6', 'cust@example.com', 0);
 
-INSERT INTO account_profiles (account_id, full_name, phone, address) VALUES
-(1, 'Admin User', '0900000001', 'Hanoi'),
+INSERT INTO account_profiles (account_id, fullName, phone, address) VALUES
+(1, 'Admin', '0900000001', 'Hanoi'),
 (2, 'Staff One', '0900000002', 'Hanoi'),
 (3, 'Customer One', '0900000003', 'HCM');
 
