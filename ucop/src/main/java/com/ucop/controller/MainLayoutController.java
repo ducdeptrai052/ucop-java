@@ -25,6 +25,7 @@ public class MainLayoutController {
     @FXML private Button btnCategory;
     @FXML private Button btnItem;
     @FXML private Button btnStock;
+    @FXML private Button btnShop;
     @FXML private Button btnCart;
     @FXML private Button btnOrders;
     @FXML private Button btnPromotions;
@@ -40,7 +41,13 @@ public class MainLayoutController {
         }
         SecurityContext.setCurrentUser(acc);
         applyRoleVisibility(acc);
-        showDashboard();
+        boolean isCustomer = acc != null && acc.getRoles() != null
+                && acc.getRoles().stream().anyMatch(r -> r.getName() == RoleName.CUSTOMER);
+        if (isCustomer) {
+            showShop();
+        } else {
+            showDashboard();
+        }
     }
 
     private void applyRoleVisibility(Account acc) {
@@ -61,7 +68,10 @@ public class MainLayoutController {
             if (btnCategory != null) btnCategory.setVisible(false);
             if (btnItem != null) btnItem.setVisible(false);
             if (btnStock != null) btnStock.setVisible(false);
+            if (btnOrders != null) btnOrders.setVisible(false);
             if (btnPromotions != null) btnPromotions.setVisible(false);
+            if (btnShop != null) btnShop.setVisible(true);
+            if (btnDashboard != null) btnDashboard.setVisible(false);
         }
     }
 
@@ -90,6 +100,11 @@ public class MainLayoutController {
     @FXML
     public void showStock() {
         setContent("/fxml/stock-list.fxml");
+    }
+
+    @FXML
+    public void showShop() {
+        setContent("/fxml/product-grid.fxml");
     }
 
     @FXML

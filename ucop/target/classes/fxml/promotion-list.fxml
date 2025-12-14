@@ -29,7 +29,7 @@
         <Label text="Mo ta:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
         <TextField fx:id="txtDescription" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
 
-        <Label text="% giam:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Label text="Giảm (%) :" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
         <TextField fx:id="txtPercent" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
         <Label text="Giam co dinh:" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
         <TextField fx:id="txtValue" GridPane.rowIndex="2" GridPane.columnIndex="3"/>

@@ -19,6 +19,7 @@
                 <Button fx:id="btnCategory" text="Category" onAction="#showCategory"/>
                 <Button fx:id="btnItem" text="Item" onAction="#showItem"/>
                 <Button fx:id="btnStock" text="Stock" onAction="#showStock"/>
+                <Button fx:id="btnShop" text="Shop" onAction="#showShop"/>
                 <Button fx:id="btnCart" text="Cart" onAction="#showCart"/>
                 <Button fx:id="btnOrders" text="Orders" onAction="#showOrders"/>
                 <Button fx:id="btnPromotions" text="Promotions" onAction="#showPromotions"/>

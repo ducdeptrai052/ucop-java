@@ -6,6 +6,7 @@ import com.ucop.entity.Item;
 import com.ucop.entity.Order;
 import com.ucop.entity.Promotion;
 import com.ucop.entity.enums.PaymentMethod;
+import com.ucop.util.CurrencyUtil;
 import com.ucop.service.CatalogService;
 import com.ucop.service.OrderService;
 import javafx.collections.FXCollections;
@@ -79,6 +80,17 @@ public class CartController {
         colPrice.setCellValueFactory(c ->
                 new javafx.beans.property.SimpleDoubleProperty(
                         c.getValue().getUnitPrice().doubleValue()));
+        colPrice.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Number value, boolean empty) {
+                super.updateItem(value, empty);
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(CurrencyUtil.formatNumber(value));
+                }
+            }
+        });
 
         // lấy cart hiện tại của user
         currentCart = orderService.getOrCreateCartForCurrentUser();
@@ -221,11 +233,11 @@ public class CartController {
 
         BigDecimal grand = subtotal.subtract(discountCart).add(tax).add(shipping);
 
-        lblSubtotal.setText(subtotal.toString());
-        lblDiscount.setText(discountCart.toString());
-        lblTax.setText(tax.toString());
-        lblShipping.setText(shipping.toString());
-        lblGrandTotal.setText(grand.toString());
+        lblSubtotal.setText(CurrencyUtil.format(subtotal));
+        lblDiscount.setText(CurrencyUtil.format(discountCart));
+        lblTax.setText(CurrencyUtil.format(tax));
+        lblShipping.setText(CurrencyUtil.format(shipping));
+        lblGrandTotal.setText(CurrencyUtil.format(grand));
     }
 
     private void alert(String msg) {

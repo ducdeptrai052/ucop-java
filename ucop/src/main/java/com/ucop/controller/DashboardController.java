@@ -1,9 +1,9 @@
 package com.ucop.controller;
 
 import com.ucop.service.ReportService;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import com.ucop.util.CurrencyUtil;
 
 import java.math.BigDecimal;
 
@@ -27,7 +27,7 @@ public class DashboardController {
         long totalOrders = reportService.totalOrders();
         long itemsSold = reportService.totalItemsSold();
 
-        lblTotalRevenue.setText(totalRevenue.toString());
+        lblTotalRevenue.setText(CurrencyUtil.format(totalRevenue));
         lblTotalOrders.setText(Long.toString(totalOrders));
         lblItemsSold.setText(Long.toString(itemsSold));
 

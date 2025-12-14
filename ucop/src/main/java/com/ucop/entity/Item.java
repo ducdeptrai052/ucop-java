@@ -38,6 +38,17 @@ public class Item extends AuditableEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public Long getId() {
         return id;
     }

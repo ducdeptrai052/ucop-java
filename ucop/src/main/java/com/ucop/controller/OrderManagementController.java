@@ -5,6 +5,7 @@ import com.ucop.entity.Payment;
 import com.ucop.entity.enums.OrderStatus;
 import com.ucop.service.OrderService;
 import com.ucop.service.PaymentService;
+import com.ucop.util.CurrencyUtil;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -30,7 +31,7 @@ public class OrderManagementController {
     private TableColumn<Order, String> colDate;
 
     @FXML
-    private TableColumn<Order, Number> colTotal;
+    private TableColumn<Order, String> colTotal;
 
     @FXML
     private ComboBox<OrderStatus> cbStatusFilter;
@@ -62,10 +63,8 @@ public class OrderManagementController {
                                 : ""));
 
         colTotal.setCellValueFactory(c ->
-                new javafx.beans.property.SimpleDoubleProperty(
-                        c.getValue().getGrandTotal() != null
-                                ? c.getValue().getGrandTotal().doubleValue()
-                                : 0.0));
+                new javafx.beans.property.SimpleStringProperty(
+                        CurrencyUtil.format(c.getValue().getGrandTotal())));
 
         cbStatusFilter.setItems(FXCollections.observableArrayList(OrderStatus.values()));
 

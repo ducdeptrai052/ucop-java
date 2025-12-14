@@ -66,6 +66,17 @@ public class CatalogService {
         }
     }
 
+    public List<Item> findItemsByCategory(Long categoryId) {
+        if (categoryId == null) return findAllItems();
+        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
+            return s.createQuery(
+                            "from Item i join fetch i.category c where c.id = :cid",
+                            Item.class)
+                    .setParameter("cid", categoryId)
+                    .list();
+        }
+    }
+
     public void saveItem(Item item) {
         Transaction tx = null;
         try (Session s = HibernateUtil.getSessionFactory().openSession()) {
@@ -89,6 +100,14 @@ public class CatalogService {
             tx = s.beginTransaction();
             Item managed = s.get(Item.class, item.getId());
             if (managed != null) {
+                // Xóa trước các bản ghi phụ thuộc (stock, cart) để tránh lỗi FK.
+                s.createQuery("delete from StockItem si where si.item.id = :iid")
+                        .setParameter("iid", managed.getId())
+                        .executeUpdate();
+                s.createQuery("delete from CartItem ci where ci.item.id = :iid")
+                        .setParameter("iid", managed.getId())
+                        .executeUpdate();
+                // Lịch sử OrderItem nên giữ lại; nếu có FK, xóa sẽ bị chặn -> để người dùng biết.
                 s.remove(managed);
             }
             tx.commit();
@@ -174,32 +193,56 @@ public class CatalogService {
     public void exportItemsToCsv(Path path) throws Exception {
         List<Item> items = findAllItems();
         try (CSVWriter writer = new CSVWriter(new FileWriter(path.toFile()))) {
-            writer.writeNext(new String[]{"sku", "name", "price", "active"});
+            writer.writeNext(new String[]{"sku", "name", "price", "active", "imageUrl", "description"});
             for (Item i : items) {
                 writer.writeNext(new String[]{
                         i.getSku(),
                         i.getName(),
                         i.getPrice() != null ? i.getPrice().toString() : "",
-                        Boolean.toString(i.isActive())
+                        Boolean.toString(i.isActive()),
+                        i.getImageUrl() != null ? i.getImageUrl() : "",
+                        i.getDescription() != null ? i.getDescription() : ""
                 });
             }
         }
     }
 
     public void importItemsFromCsv(Path path) throws Exception {
-        try (CSVReader reader = new CSVReader(new FileReader(path.toFile()))) {
+        Transaction tx = null;
+        try (CSVReader reader = new CSVReader(new FileReader(path.toFile()));
+             Session s = HibernateUtil.getSessionFactory().openSession()) {
             List<String[]> rows = reader.readAll();
             if (rows.isEmpty()) return;
+            tx = s.beginTransaction();
             for (int i = 1; i < rows.size(); i++) {
                 String[] r = rows.get(i);
                 if (r.length < 3) continue;
-                Item item = new Item();
-                item.setSku(r[0]);
-                item.setName(r[1]);
-                item.setPrice(new BigDecimal(r[2]));
+                String sku = r[0].trim();
+                if (sku.isEmpty()) continue;
+
+                Item item = s.createQuery("from Item where sku = :sku", Item.class)
+                        .setParameter("sku", sku)
+                        .setMaxResults(1)
+                        .uniqueResult();
+                if (item == null) item = new Item();
+
+                item.setSku(sku);
+                item.setName(r[1] != null ? r[1].trim() : "");
+                item.setPrice(new BigDecimal(r[2].trim()));
                 item.setActive(r.length > 3 ? Boolean.parseBoolean(r[3]) : true);
-                saveItem(item);
+                if (r.length > 4) {
+                    item.setImageUrl(r[4] != null ? r[4].trim() : null);
+                }
+                if (r.length > 5) {
+                    item.setDescription(r[5]);
+                }
+
+                s.merge(item); // upsert
             }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw e;
         }
     }
 

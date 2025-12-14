@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ucop.controller.ProductGridController"
+      spacing="12" prefWidth="960" prefHeight="700">
+    <Label text="Sản phẩm" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Danh mục:"/>
+        <ComboBox fx:id="cbCategory" prefWidth="180"/>
+
+        <Label text="Tìm theo tên:"/>
+        <TextField fx:id="txtSearchName" prefWidth="180"/>
+
+        <Label text="Tìm theo mã:"/>
+        <TextField fx:id="txtSearchSku" prefWidth="140"/>
+
+        <Label text="Sắp xếp:"/>
+        <ComboBox fx:id="cbSort" prefWidth="140"/>
+
+        <Button text="Làm mới" onAction="#handleRefresh"/>
+    </HBox>
+
+    <ScrollPane fitToWidth="true" prefHeight="640">
+        <content>
+            <FlowPane fx:id="flowProducts" hgap="12" vgap="12" prefWidth="900"/>
+        </content>
+    </ScrollPane>
+</VBox>
